@@ -1,57 +1,82 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+require_once "vendor/autoload.php";
+use App\DB;
+$db = new DB();
+if ($_GET["query"] ?? false) {
+    $posts = $db->search_post($_GET["query"]);
+    $posts = array_map(function ($post) {
+        $striped = strip_tags($post["Content"]);
+        $post["Preview"] = mb_substr($striped, 0, 150). (mb_strlen($striped) > 150 ? "..." : "");
+        $post["Data"] = DateTime::createFromFormat("Y-m-d", $post["Data"])->format("d.m.Y");
+        return $post;
+    }, $posts);
+}
+else {
+    $posts = [];
+}
+?>
+
+<!doctype html>
+<html lang = "en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <link rel="stylesheet" href="./assets/css/common.css">
-    <link rel="stylesheet" href="./assets/css/search.css">
-    <title>blog</title>
+    <meta charset = "UTF-8">
+    <meta name = "viewport"
+          content = "width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv = "X-UA-Compatible" content = "ie=edge">
+    <title>Блог</title>
+    <link rel = "stylesheet" href = "assets/css/common.css">
+    <link rel = "stylesheet" href = "assets/css/search.css">
 </head>
 <body>
+<script src="assets/js/common.js" defer></script>
+
 <?php include "include/header.php"?>
 
 <main>
     <div class="inner_container">
-
-        <form action="">
-            <lable>
-                <input type="text" placeholder="я ищу..">
-            </lable>
+        <form action = "">
+            <label>
+                <input name="query" type = "text" placeholder="Я ищу..." value="<?= $_GET["query"] ?? "" ?>">
+            </label>
         </form>
-        <div class="results">
-<!--            <div class="post">-->
-<!--                <div class="post_info">-->
-<!--                    <p class="username">Nil Josten</p>-->
-<!--                    <p class="date">12.12.12</p>-->
-<!--                </div>-->
-<!--                <h2>Короче я понял</h2>-->
-<!--                <div class="cover">-->
-<!--                    <img  src="./assets/image/1688932908_art-kartinkof-club-p-lunapiq-art-5.jpg" alt="">-->
-<!--                </div>-->
-<!--                <p class="preview">Из тебя растили суперзвезду, и тебе, наверное, пришлось очень, очень тяжко. В тебе видели только ресурс, но не человека, нечто совершенно бесполезное за пределами поля. Да, звучит жестко. Мы с Кевином постоянно обсуждаем твои многочисленные комплексы, которыми одарил тебя папаша.Понимаю, в твоей психической неуравновешенности и беспредельной мании величия виноват не только ты. Кроме того, ясно, что ты чисто физически не способен разговаривать с окружающими как все нормальные люди. Тем не менее это не означает, что мы обязаны выслушивать все то дерьмо, которое из тебя льется. Жалость — это, конечно, повод во многом тебя оправдать, но свой лимит на жалость ты исчерпал примерно шесть оскорблений назад. Так что, пожалуйста — пожалуйста, — заткни уже пасть и не цепляйся к нам.-->
-<!--                    Вороны разом уронили челюсти. Нарушив свою идеальную симметрию, они ошеломленно пялились на Нила.</p>-->
-<!--                <a href="post.php">Читать</a>-->
-<!--                <div class="post_stats">-->
-<!--                    <div class="stat">-->
-<!--                        <img src="assets/image/view-eye.svg" alt="">-->
-<!--                        <p>123</p>-->
-<!--                    </div>-->
-<!--                    <div class="stat">-->
-<!--                        <img src="assets/image/comment-3.svg" alt="">-->
-<!--                        <p>34</p>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-            <div class="not_found">
-                <img src="./assets/image/message-letter-mail-unsubscribe-emoji.svg" alt="">
-                <p>по вашему запросу ничего не найдено</p>
-            </div>
+        <div class="results <?= !count($posts)? "not_found": "" ?>">
+            <?php if (count($posts)): ?>
+                <?php foreach ($posts as $post): ?>
+                    <div class="post">
+                        <div class="post_info">
+                            <p class="user_name"><?= $post["User_name"] ?></p>
+                            <p class="data"><?= $post["Data"] ?></p>
+                        </div>
+                        <h2><?= $post["Name"] ?></h2>
+                        <?php if ($post["Cover"]): ?>
+                            <div class="cover">
+                                <img src = "<?= $post["Cover"] ?>" alt = "">
+                            </div>
+                        <?php endif; ?>
+                        <p class="preview"><?= $post["Preview"] ?></p>
+                        <a href="post.php?id=<?= $post["Id"] ?>">Читать</a>
+                        <div class="post_stats">
+                            <div class = "stat">
+                                <img src = "assets/images/view-eye-svgrepo-com.svg" alt = "">
+                                <p><?= $post["Views"] ?></p>
+                            </div>
+                            <div class = "stat">
+                                <img src = "assets/images/comment-1-svgrepo-com.svg" alt = "">
+                                <p><?= $post["Comments"] ?></p>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div class="not_found">
+                    <img src = "assets/image/message-letter-mail-unsubscribe-emoji.svg" alt = "">
+                    <p> По вашему запросу ничего не найденно!</p>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 </main>
 
 <?php include "include/footer.php"?>
-<script src="assets/js/common.js"></script>
 </body>
 </html>

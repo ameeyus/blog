@@ -1,3 +1,24 @@
+<?php
+require_once "vendor/autoload.php";
+use App\DB;
+$db = new DB();
+if (isset($_GET["filter"])) {
+    $tag = $_GET["filter"];
+    $posts = $db->get_filter_post($tag);
+}else {
+    $posts = $db->get_all_posts();
+}
+$posts = array_map(function ($post) {
+    $striped = strip_tags($post["Content"]);
+    $post["Preview"] = mb_substr($striped, 0, 150). (mb_strlen($striped) > 150 ? "..." : "");
+    $post["Data"] = DateTime::createFromFormat("Y-m-d", $post["Data"])->format("d.m.Y");
+    return $post;
+}, $posts);
+
+$tranding = $db->get_tranding();
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,117 +35,56 @@
 
 <main>
     <div class="inner_container">
+        <?php if (isset($tag)): ?>
+            <div class="filter">
+                <p>Все публикации по тегу: "<?= $tag  ?>"</p>
+            </div>
+        <?php endif; ?>
         <div class="posts">
-            <div class="post">
-                <div class="post_info">
-                    <p class="username">Nil Josten</p>
-                    <p class="date">12.12.12</p>
-                </div>
-                <h2>Короче я понял</h2>
-                <div class="cover">
-                    <img  src="./assets/image/1688932908_art-kartinkof-club-p-lunapiq-art-5.jpg" alt="">
-                </div>
-                <p class="preview">Из тебя растили суперзвезду, и тебе, наверное, пришлось очень, очень тяжко. В тебе видели только ресурс, но не человека, нечто совершенно бесполезное за пределами поля. Да, звучит жестко. Мы с Кевином постоянно обсуждаем твои многочисленные комплексы, которыми одарил тебя папаша.Понимаю, в твоей психической неуравновешенности и беспредельной мании величия виноват не только ты. Кроме того, ясно, что ты чисто физически не способен разговаривать с окружающими как все нормальные люди. Тем не менее это не означает, что мы обязаны выслушивать все то дерьмо, которое из тебя льется. Жалость — это, конечно, повод во многом тебя оправдать, но свой лимит на жалость ты исчерпал примерно шесть оскорблений назад. Так что, пожалуйста — пожалуйста, — заткни уже пасть и не цепляйся к нам.
-                    Вороны разом уронили челюсти. Нарушив свою идеальную симметрию, они ошеломленно пялились на Нила.</p>
-                <a href="post.php">Читать</a>
-                <div class="post_stats">
-                    <div class="stat">
-                        <img src="assets/image/view-eye.svg" alt="">
-                        <p>123</p>
+            <?php foreach ($posts as $post): ?>
+                <div class="post">
+                    <div class="post_info">
+                        <p class="user_name"><?= $post["User_name"] ?></p>
+                        <p class="data"><?= $post["Data"] ?></p>
                     </div>
-                    <div class="stat">
-                        <img src="assets/image/comment-3.svg" alt="">
-                        <p>34</p>
-                    </div>
-                </div>
-            </div>
-            <div class="post">
-                <div class="post_info">
-                    <p class="username">Nil Josten</p>
-                    <p class="date">12.12.12</p>
-                </div>
-                <h2>Короче я понял</h2>
-                <div class="cover">
-                    <img  src="https://i.pinimg.com/originals/61/0f/67/610f67780b2a1342a586187af0f78d41.jpg" alt="">
-                </div>
-                <p class="preview">Из тебя растили суперзвезду, и тебе, наверное, пришлось очень, очень тяжко. В тебе видели только ресурс, но не человека, нечто совершенно бесполезное за пределами поля. Да, звучит жестко. Мы с Кевином постоянно обсуждаем твои многочисленные комплексы, которыми одарил тебя папаша.Понимаю, в твоей психической неуравновешенности и беспредельной мании величия виноват не только ты. Кроме того, ясно, что ты чисто физически не способен разговаривать с окружающими как все нормальные люди. Тем не менее это не означает, что мы обязаны выслушивать все то дерьмо, которое из тебя льется. Жалость — это, конечно, повод во многом тебя оправдать, но свой лимит на жалость ты исчерпал примерно шесть оскорблений назад. Так что, пожалуйста — пожалуйста, — заткни уже пасть и не цепляйся к нам.
-                    Вороны разом уронили челюсти. Нарушив свою идеальную симметрию, они ошеломленно пялились на Нила.</p>
-                <a href="post.php">Читать</a>
-                <div class="post_stats">
-                    <div class="stat">
-                        <img src="assets/image/view-eye.svg" alt="">
-                        <p>123</p>
-                    </div>
-                    <div class="stat">
-                        <img src="assets/image/comment-3.svg" alt="">
-                        <p>34</p>
+                    <h2><?= $post["Name"] ?></h2>
+                    <?php if ($post["Cover"]): ?>
+                        <div class="cover">
+                            <img src = "<?= $post["Cover"] ?>" alt = "">
+                        </div>
+                    <?php endif; ?>
+                    <p class="preview"><?= $post["Preview"] ?></p>
+                    <a href="post.php?id=<?= $post["Id"] ?>">Читать</a>
+                    <div class="post_stats">
+                        <div class = "stat">
+                            <img src = "assets/image/view-eye.svg" alt = "">
+                            <p><?= $post["Views"] ?></p>
+                        </div>
+                        <div class = "stat">
+                            <img src = "assets/image/comment-3.svg" alt = "">
+                            <p><?= $post["Comments"] ?></p>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php endforeach; ?>
         </div>
         <div class="trending">
             <h2>ЧИТАЮТ СЕЙЧАС</h2>
-            <a href="#" class="post">
-
-                <h2>Короче я понял</h2>
-
-                <div class="post_stats">
-                    <div class="stat">
-                        <img src="assets/image/view-eye.svg" alt="">
-                        <p>123</p>
+            <?php foreach ($tranding as $post): ?>
+                <a href="post.php?id=<?= $post["Id"] ?>" class="post">
+                    <h2><?= $post["Name"] ?></h2>
+                    <div class="post_stats">
+                        <div class = "stat">
+                            <img src = "assets/image/view-eye.svg" alt = "">
+                            <p><?= $post["Views"] ?></p>
+                        </div>
+                        <div class = "stat">
+                            <img src = "assets/image/comment-3.svg" alt = "">
+                            <p><?= $post["Comments"] ?></p>
+                        </div>
                     </div>
-                    <div class="stat">
-                        <img src="assets/image/comment-3.svg" alt="">
-                        <p>34</p>
-                    </div>
-                </div>
-            </a>
-            <a href="#" class="post">
-
-                <h2>Короче я понял</h2>
-
-                <div class="post_stats">
-                    <div class="stat">
-                        <img src="assets/image/view-eye.svg" alt="">
-                        <p>123</p>
-                    </div>
-                    <div class="stat">
-                        <img src="assets/image/comment-3.svg" alt="">
-                        <p>34</p>
-                    </div>
-                </div>
-            </a>
-            <a href="#" class="post">
-
-                <h2>Короче я понял</h2>
-
-                <div class="post_stats">
-                    <div class="stat">
-                        <img src="assets/image/view-eye.svg" alt="">
-                        <p>123</p>
-                    </div>
-                    <div class="stat">
-                        <img src="assets/image/comment-3.svg" alt="">
-                        <p>34</p>
-                    </div>
-                </div>
-            </a>
-            <a href="#" class="post">
-
-                <h2>Короче я понял</h2>
-
-                <div class="post_stats">
-                    <div class="stat">
-                        <img src="assets/image/view-eye.svg" alt="">
-                        <p>123</p>
-                    </div>
-                    <div class="stat">
-                        <img src="assets/image/comment-3.svg" alt="">
-                        <p>34</p>
-                    </div>
-                </div>
-            </a>
-
+                </a>
+            <?php endforeach; ?>
         </div>
     </div>
 </main>

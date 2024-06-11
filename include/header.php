@@ -1,12 +1,13 @@
 <?php
-if(session_status() === PHP_SESSION_NONE){
-    session_start();
-}
+    if(session_status() === PHP_SESSION_NONE){
+        session_start();
+    }
 
-if (isset($_SESSION["message"])) {
-    $message = $_SESSION["message"];
-    unset($_SESSION["message"]);
-}
+    if (isset($_SESSION["message"])) {
+        $message = $_SESSION["message"];
+        unset($_SESSION["message"]);
+    }
+    $user_id= $_SESSION["user_id"] ?? 0;
 ?>
 
 <header>
@@ -16,10 +17,13 @@ if (isset($_SESSION["message"])) {
         </div>
         <nav>
             <ul>
-                <li><a href="#">Все</a></li>
-                <li><a href="#">Рзаработка</a></li>
+                <li><a href="index.php">Все</a></li>
+                <li><a href="#">Разработка</a></li>
                 <li><a href="#">Дизайн</a></li>
                 <li><a href="#">администрирование</a></li>
+            <?php if ($user_id): ?>
+                <li><a href="scripts/logout.php">Выход</a></li>
+                <?php endif; ?>
             </ul>
         </nav>
         <div class="icons">

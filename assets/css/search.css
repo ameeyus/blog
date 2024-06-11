@@ -1,46 +1,58 @@
-body{
+body {
     display: flex;
     flex-direction: column;
-
 }
 
-main
-{
+main {
     flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-form{
+main .inner_container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+main .inner_container .results.not_found {
+    margin: auto;
+}
+
+form, .post {
     padding: 1rem;
     margin: 1rem 0;
-    background: #fff;
+    background: white;
 }
 
-form input{
+form input {
     width: 100%;
     box-sizing: border-box;
 }
-.post {
-    background: #ffffff;
-    padding: 1rem;
 
+.post {
+    padding: 1rem;
+    background: white;
     display: block;
+    width: 100%;
 }
 
-.results .post{
-    margin:1rem 0 ;
+.results .post {
+    box-sizing:border-box;
+    margin: 1rem 0;
 }
 
 .post .post_info {
-    gap: 1rem;
     display: flex;
+    gap: 1rem;
     margin-bottom: 1rem;
 }
 
-.post .post_info .username {
+.post .post_info .user_name {
     font-weight: bold;
 }
 
-.results .post > h2 {
+.results .post >h2 {
     margin-bottom: 2rem;
 }
 
@@ -51,13 +63,10 @@ form input{
     overflow: hidden;
     display: flex;
     align-items: center;
-
 }
 
-.post .cover img {
+.post .cover img{
     max-width: 100%;
-    max-height: 45vh;
-
 }
 
 .post .preview {
@@ -65,8 +74,8 @@ form input{
 }
 
 .post a {
-    display: inline-block;
     padding: .5rem 1rem;
+    display: inline-block;
     color: #548eaa;
     border: 1px solid #548eaa;
     margin: 1rem 0;
@@ -76,7 +85,7 @@ form input{
 
 .post a:hover {
     color: white;
-    background: #3c9cc6;
+    background: #548eaa;
 }
 
 .post .post_stats {
@@ -91,26 +100,29 @@ form input{
 
 .post .post_stats .stat {
     display: flex;
-    align-content: center;
+    align-items: center;
     gap: .5rem;
 }
 
 .post .post_stats .stat p {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
+}
+
+.post .preview {
+    text-align: justify;
+    box-sizing: border-box;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .not_found {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* Центрирование содержимого по горизонтали */
-    justify-content: center; /* Центрирование содержимого по вертикали */
-    text-align: center;
-    width: 100%; /* Ширина 100% для адаптивности */
+    display: grid;
+    justify-content: center;
 }
 
 .not_found img {
     max-width: 25vw;
-    max-height: 25vw;
+    max-height: 25vh;
     margin: auto;
 }
 

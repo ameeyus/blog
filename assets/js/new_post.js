@@ -1,21 +1,31 @@
 $(document).ready(function() {
     let summernote_div = $('#summernote');
-    summernote_div.summernote(); // Инициализация Summernote для создания необходимых элементов
+    summernote_div.summernote({
+        height: 500
+    });
+});
 
-    // Задержка для расчета высоты, чтобы убедиться, что элементы Summernote доступны
-    setTimeout(function() {
-        let viewport_height = window.innerHeight;
-        let header_height = document.querySelector("header").offsetHeight;
-        let footer_height = document.querySelector("footer").offsetHeight;
-        let toolbar_height = document.querySelector(".note-toolbar").offsetHeight;
-        let resize_height = document.querySelector(".note-statusbar").offsetHeight;
-        let margins = 32;
-        let total_height = viewport_height - header_height - footer_height - toolbar_height - resize_height - margins;
-
-        // Уничтожить и повторно инициализировать Summernote с вычисленной высотой
-        summernote_div.summernote('destroy');
-        summernote_div.summernote({
-            height: total_height
-        });
-    }, 100); // Настройте таймаут по мере необходимости
+document.querySelector("#add_post").addEventListener("click", ()=>{
+    let name = document.querySelector("[name='name']").value,
+        cover = document.querySelector("[name='cover']").value,
+        text = $('#summernote').summernote("code"),
+        tags_array = [
+            document.querySelector("[name='main_tag']").value
+        ],
+        tags = document.querySelector("[name='tags']").value.split(",");
+    if (tags.length) {
+        tags_array = tags_array.concat(tags);
+    }
+    tags = tags_array.join(",");
+    let data = new FormData();
+    data.append("name", name);
+    data.append("cover", cover);
+    data.append("text", text);
+    data.append("tags", tags);
+    fetch("scripts/add_post.php", {
+        method: "POST",
+        body: data
+    }).then(()=>{
+        location.reload();
+    });
 });

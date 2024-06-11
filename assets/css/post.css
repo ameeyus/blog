@@ -1,3 +1,12 @@
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+}
+
 .post , .comments{
     margin: 1rem 0;
     background: #ffff;
@@ -10,9 +19,37 @@
     margin-bottom: 1rem;
 }
 
+.comment_info .user_name {
+    color: #3c9cc6;
+}
+.comment_info .data{
+    color: #c4c4c4c4;
+}
+.comment_info{
+    font-size: 0.8rem;
+
+}
+.button-delete {
+    display: grid;
+    justify-content: right;
+    margin-bottom: 3rem;
+    margin-top: -30px;
+}
+.button-delete button {
+    display: inline-block;
+    padding: .5rem 1rem;
+    color: #548eaa;
+    border: 1px solid #548eaa;
+    margin: 0;
+    background-color: white;
+    border-radius: .25rem;
+    transition: all .5s;
+}
+
 .post .post_info .username, .comments .comment_info .username {
     font-weight: bold;
 }
+
 
 .post > h2 {
     margin-bottom: 2rem;
@@ -26,6 +63,11 @@
     display: flex;
     justify-content: center;
 
+}
+.post .content * {
+    word-break: break-word;
+    white-space: normal;
+    margin-bottom: 2rem;
 }
 
 .post .image img {
@@ -83,4 +125,60 @@
 
 .comments .comment:not(:last-child){
     margin-bottom: 3rem;
+}
+
+
+.comments form label {
+    margin-bottom: .5rem;
+}
+
+.comments form {
+    margin: 1rem 0;
+}
+
+.comments form label, .comments form textarea {
+    display: block;
+    width: 100%;
+}
+
+.comments textarea {
+    resize: none;
+    padding: .5rem;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.comments form button {
+    display: inline-block;
+    padding: .5rem 1rem;
+    color: white;
+    background: #3c9cc6;
+    border: 1px solid #3c9cc6;
+    margin: 1rem 0;
+    border-radius: .25rem;
+    transition: all .5s;
+    font-size: 1rem;
+}
+
+button#show_form {
+    background-color: white;
+    font-size: 1.2rem;
+}
+
+button#show_form:hover {
+    color: #4695bc;
+}
+
+.comments > button {
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 600px){
+    .post .tags p {
+        line-height: 1.75rem;
+    }
+
+    .post .tags a {
+        margin: .5rem;
+    }
 }
