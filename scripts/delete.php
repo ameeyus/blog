@@ -2,11 +2,11 @@
 require_once "../vendor/autoload.php";
 use App\DB;
 session_start();
-$uid = $_SESSION["uid"] ?? 0;
+$uid = $_SESSION["user_id"] ?? 0;
 
-if (isset($_SESSION["uid"], $_POST["pid"])) {
+if (isset($_SESSION["user_id"], $_POST["post_id"])) {
     $db = new DB();
-    $db->delete_post($_POST["pid"]);
+    $db->delete_post($_POST["post_id"]);
 }
 
 header("Location: " . $_SERVER["HTTP_REFERER"]);

@@ -17,12 +17,22 @@
         </div>
         <nav>
             <ul>
-                <li><a href="index.php">Все</a></li>
-                <li><a href="#">Разработка</a></li>
-                <li><a href="#">Дизайн</a></li>
-                <li><a href="#">администрирование</a></li>
-            <?php if ($user_id): ?>
-                <li><a href="scripts/logout.php">Выход</a></li>
+                <li>
+                    <a href = "index.php">Все</a>
+                </li>
+                <li>
+                    <a href = "index.php?filter=Разработка">Разработка</a>
+                </li>
+                <li>
+                    <a href = "index.php?filter=Дизайн">Дизайн</a>
+                </li>
+                <li>
+                    <a href = "index.php?filter=Администрирование">Администрирование</a>
+                </li>
+                <?php if ($user_id): ?>
+                    <li>
+                        <a href = "scripts/logout.php">Выход</a>
+                    </li>
                 <?php endif; ?>
             </ul>
         </nav>

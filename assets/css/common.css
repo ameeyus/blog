@@ -124,32 +124,30 @@ button{
     cursor: pointer;
 }
 
-#popup_message{
+#popup_message {
     position: fixed;
     inset: 0;
     display: none;
     background: rgb(0 0 0 / 50%);
+    z-index: 2;
 }
-#popup_message.active{
+
+#popup_message.active {
     display: flex;
-
 }
 
-#popup_message .center{
+#popup_message .center {
     width: 300px;
     margin: auto;
-}
-
-#popup_message .center p{
-    text-align: center;
-    font-size: 1.1rem;
     background: #3c9cc6;
     padding: 1rem;
 }
 
-
-
-
+#popup_message .center p {
+    text-align: center;
+    font-size: 1.1rem;
+    margin: 0;
+}
 @media screen and (max-width:600px ){
 
     header > .inner_container, footer > .inner_container, main > .inner_container {

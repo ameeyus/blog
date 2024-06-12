@@ -89,10 +89,10 @@ else {
         <div class="comments">
             <h2>Коментарии</h2>
             <?php if ($user_id): ?>
-                <button id="show_form">Добавить коммент</button>
+                <button id="show_form">Добавить комментарий</button>
                 <form id="comment_form" style="display: none" action = "scripts/add_comment.php" method="post">
                     <input type = "hidden" name="post_id" value="<?= $post["Id"] ?>">
-                    <label for="comment">Введите коммент</label>
+                    <label for="comment">Введите комментарий</label>
                     <textarea name = "comment" id="comment" rows = "10"></textarea>
                     <button>Добавить</button>
                 </form>
