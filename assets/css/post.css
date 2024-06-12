@@ -62,7 +62,18 @@ body {
     overflow: hidden;
     display: flex;
     justify-content: center;
+    word-break: break-word;
 
+}
+
+.post .cover {
+    margin-bottom: 1rem;
+    width: 100%;
+    max-height: 45vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    word-break: break-word;
 }
 .post .content * {
     word-break: break-word;
